@@ -11,7 +11,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Object13.Core.Services.Implementations;
+using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Extention;
+using Object13.DataLayer.Repository;
 
 namespace Object13.WebApi
 {
@@ -36,6 +39,14 @@ namespace Object13.WebApi
 
             #region ConectionString
             services.Object13ApplicationDbContext(Configuration);
+            #endregion
+
+            #region DbContext
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            #endregion
+
+            #region AppServices
+            services.AddScoped<IUserService, UserService>();
             #endregion
 
             services.AddControllers();
