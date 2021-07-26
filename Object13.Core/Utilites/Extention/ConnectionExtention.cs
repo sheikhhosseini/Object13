@@ -17,7 +17,7 @@ namespace Object13.Core.Utilites.Extention
         {
             service.AddDbContext<Object13Context>(option =>
             {
-                var connectionString = "ConnectionStrings:Object13ConnectionDevelopment";
+                var connectionString = "ConnectionStrings:Object13Connection:Development";
                 option.UseSqlServer(configuration[connectionString]);
             });
             return service;

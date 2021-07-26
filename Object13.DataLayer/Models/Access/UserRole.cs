@@ -1,8 +1,9 @@
 ﻿using Object13.DataLayer.Models.Account;
+using Object13.DataLayer.Models.Main;
 
 namespace Object13.DataLayer.Models.Access
 {
-    public class UserRole
+    public class UserRole:BaseModel
     {
         #region Propersties
         public long UserID { get; set; }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Object13.DataLayer.Models.Access;
+using Object13.DataLayer.Models.Account;
 
 namespace Object13.DataLayer.Context
 {
@@ -14,9 +16,9 @@ namespace Object13.DataLayer.Context
         }
 
         #region Tables
-
-        
-
+        public DbSet<User> TblUsers { get; set; }
+        public DbSet<Role> TblRoles { get; set; }
+        public DbSet<UserRole> TblUserRoles { get; set; }
         #endregion
 
         #region ManageCascade-OnModelCreateing
