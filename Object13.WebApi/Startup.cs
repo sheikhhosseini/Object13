@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Object13.Core.Utilites.Extention;
 
 namespace Object13.WebApi
 {
@@ -31,6 +32,10 @@ namespace Object13.WebApi
             #region appsettings.json
             services.AddSingleton<IConfiguration>(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile($"appsettings.json").Build());
+            #endregion
+
+            #region ConectionString
+            services.Object13ApplicationDbContext(Configuration);
             #endregion
 
             services.AddControllers();
