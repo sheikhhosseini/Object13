@@ -15,10 +15,12 @@ namespace Object13.WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment hostEnvironment, IConfiguration configuration)
         {
-            Configuration = configuration;
+            _HostEnvironment = hostEnvironment;
+            Configuration = configuration;  
         }
+        public IHostEnvironment _HostEnvironment { get; }
 
         public IConfiguration Configuration { get; }
 
