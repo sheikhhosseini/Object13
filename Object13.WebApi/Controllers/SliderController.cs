@@ -20,7 +20,7 @@ namespace Object13.WebApi.Controllers
         #endregion
 
         [HttpGet]
-        public async Task<IActionResult> GetAllSliders()
+        public async Task<IActionResult> GetActiveSlider()
         {
             return  JsonResponseStatus.Success(await _sliderService.GetActiveSlider());
         }

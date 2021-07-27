@@ -63,6 +63,7 @@ namespace Object13.WebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
