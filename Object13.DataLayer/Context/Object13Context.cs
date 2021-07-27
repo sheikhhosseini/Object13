@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Object13.DataLayer.Models.Access;
 using Object13.DataLayer.Models.Account;
+using Object13.DataLayer.Models.Product;
+using Object13.DataLayer.Models.SiteUtilites;
 
 namespace Object13.DataLayer.Context
 {
@@ -19,6 +21,13 @@ namespace Object13.DataLayer.Context
         public DbSet<User> TblUsers { get; set; }
         public DbSet<Role> TblRoles { get; set; }
         public DbSet<UserRole> TblUserRoles { get; set; }
+
+        public DbSet<Slider> TblSliders { get; set; }
+        public DbSet<Product> TblProducts { get; set; }
+        public DbSet<ProductGallery> TblProductGalleries { get; set; }
+        public DbSet<ProductVisit> TblProductVisits { get; set; }
+        public DbSet<ProductCategory> TblProductCategories { get; set; }
+        public DbSet<ProductSelectedCategory> TblProductSelectedCategories { get; set; }
         #endregion
 
         #region ManageCascade-OnModelCreateing
