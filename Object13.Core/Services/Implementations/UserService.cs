@@ -13,21 +13,21 @@ namespace Object13.Core.Services.Implementations
     public class UserService:IUserService
     {
         #region Ctor
-        private IGenericRepository<User> _useRepository;
+        private IGenericRepository<User> _userRepository;
         public UserService(IGenericRepository<User> useRepository)
         {
-            _useRepository = useRepository;
+            _userRepository = useRepository;
         }
         #endregion
 
         public void Dispose()
         {
-            _useRepository?.Dispose();
+            _userRepository?.Dispose();
         }
 
         public async Task<List<User>> GetAllUsers()
         {
-            return await _useRepository.GetEntitiesQuery().ToListAsync();
+            return await _userRepository.GetEntitiesQuery().ToListAsync();
         }
     }
 }

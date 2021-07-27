@@ -47,6 +47,8 @@ namespace Object13.WebApi
 
             #region AppServices
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISliderService, SliderService>();
+            services.AddScoped<IProductService, ProductService>();
             #endregion
 
             services.AddControllers();
