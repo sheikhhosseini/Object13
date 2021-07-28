@@ -3,7 +3,7 @@
 
 namespace Object13.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class MyBaseController : ControllerBase
     {

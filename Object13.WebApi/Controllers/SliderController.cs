@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Common;
@@ -19,9 +20,10 @@ namespace Object13.WebApi.Controllers
         }
         #endregion
 
-        [HttpGet]
+        [HttpGet("GetActiveSlider")]
         public async Task<IActionResult> GetActiveSlider()
         {
+            //Thread.Sleep(1000);
             return  JsonResponseStatus.Success(await _sliderService.GetActiveSlider());
         }
     }
