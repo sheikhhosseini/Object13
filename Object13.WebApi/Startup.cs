@@ -10,11 +10,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Object13.Core.Services.Implementations;
 using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Extention;
 using Object13.DataLayer.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Object13.WebApi
 {
@@ -51,6 +54,35 @@ namespace Object13.WebApi
             services.AddScoped<IProductService, ProductService>();
             #endregion
 
+            #region Auth
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
+            {
+                option.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "https://localhost:44345/",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Object13JwtBearer"))
+                };
+            });
+            #endregion
+
+            #region Cors
+            services.AddCors(option =>
+            {
+                option.AddPolicy("Object13CorsPolicy" , builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .Build();
+                });
+            });
+            #endregion
+
             services.AddControllers();
         }
 
@@ -64,6 +96,8 @@ namespace Object13.WebApi
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("Object13CorsPolicy");
+            app.UseAuthentication();
 
             app.UseRouting();
 
