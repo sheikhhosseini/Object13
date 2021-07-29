@@ -1,24 +1,24 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata;
-using System.Security.Principal;
-using Object13.DataLayer.Models.Access;
-using Object13.DataLayer.Models.Main;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Object13.DataLayer.Models.Account
+namespace Object13.Core.DTOs.Account
 {
-    public class User : BaseModel
+    public class UserRegisterDto
     {
-        #region Properties
         [Display(Name = "ایمیل")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-        [MaxLength(100 , ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        [MaxLength(100, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string Email { get; set; }
 
         [Display(Name = "رمز عبور")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(150, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string Password { get; set; }
+
+        [Display(Name = "تکرار رمز عبور")]
+        [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+        [MaxLength(150, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        [Compare("Password" , ErrorMessage = "رمز عبور با تکرار آن یکسان نیست!")]
+        public string ConfirmPassword { get; set; }
 
         [Display(Name = "نام")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -30,19 +30,6 @@ namespace Object13.DataLayer.Models.Account
         [MaxLength(150, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string LastName { get; set; }
 
-        [MaxLength(100)]
-        public string EmailActiveCode { get; set; }
-
-        public bool IsActivated { get; set; }
-
-        [Display(Name = "آدرس")]
-        [MaxLength(500, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        public string Address { get; set; }
-
-        [Display(Name = "تصویر پروفایل")]
-        [MaxLength(200, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        public string ImageAvatar { get; set; }
-
         [Display(Name = "سن")]
         public int Age { get; set; }
 
@@ -50,17 +37,14 @@ namespace Object13.DataLayer.Models.Account
         [Required(ErrorMessage = "لطفا {0} را ثبت کنید")]
         public bool Gender { get; set; }
 
-        [Display(Name = "متن بیو")]
-        [MaxLength(250, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
-        public string Bio { get; set; }
-
         [Display(Name = "شماره تلفن همراه")]
         [MaxLength(15, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string MobileNumber { get; set; }
-        #endregion
+    }
 
-        #region Relation
-        public ICollection<UserRole> UserRoles { get; set; }
-        #endregion
+    public enum UserRegisterDtoResult
+    {
+        Success,
+        EmailExist
     }
 }

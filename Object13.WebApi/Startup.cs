@@ -17,7 +17,9 @@ using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Extention;
 using Object13.DataLayer.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Object13.Core.Security;
 
 namespace Object13.WebApi
 {
@@ -52,6 +54,7 @@ namespace Object13.WebApi
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISliderService, SliderService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IPasswordHelper, PasswordHelper>();
             #endregion
 
             #region Auth
