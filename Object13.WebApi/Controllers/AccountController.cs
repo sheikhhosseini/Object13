@@ -52,9 +52,9 @@ namespace Object13.WebApi.Controllers
                 switch (response)
                 {
                     case UserLoginDtoResult.Failed:
-                        return JsonResponseStatus.NotFound("User Not Found Try Again");
+                        return JsonResponseStatus.NotFound("NotFound");
                     case UserLoginDtoResult.NotAcctive:
-                        return JsonResponseStatus.Error("Account Is Not Activated");
+                        return JsonResponseStatus.UserNotActivated();
                     case UserLoginDtoResult.Success:
                         var user = await _userService.GetUserByEmail(login.Email);
                         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Object13JwtBearer"));
@@ -73,7 +73,7 @@ namespace Object13.WebApi.Controllers
                         return JsonResponseStatus.Success(new
                         {
                             token = tokenString,
-                            expireTime = 10,
+                            expireTime = login.RememberMe == "true" ? 7 : 0,
                             firstName = user.FirstName,
                             userId = user.Id
                         });
@@ -103,7 +103,7 @@ namespace Object13.WebApi.Controllers
         #endregion
 
         #region Sign Out
-        [HttpGet("logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> LogOut()
         {
             if (User.Identity.IsAuthenticated)

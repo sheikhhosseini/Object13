@@ -38,5 +38,11 @@ namespace Object13.Core.Utilites.Common
         {
             return new JsonResult(new { status = "Error", data = returnData });
         }
+
+
+        public static JsonResult UserNotActivated()
+        {
+            return new JsonResult(new { status = "UserNotActivated" });
+        }
     }
 }

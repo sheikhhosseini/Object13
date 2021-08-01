@@ -19,8 +19,9 @@ namespace Object13.Core.DTOs.Account
         [MaxLength(150, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string Password { get; set; }
 
-        //[Display(Name = "مرا به خاطر بسپار")]
-        //public bool RememberMe { get; set; }
+        [Display(Name = "مرا به خاطر بسپار")]
+        [MaxLength(5, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        public string RememberMe { get; set; }
     }
 
     public enum UserLoginDtoResult
