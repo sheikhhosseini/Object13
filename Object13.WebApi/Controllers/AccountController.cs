@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Object13.Core.DTOs.Account;
 using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Common;
+using Object13.Core.Utilites.Extention;
 
 namespace Object13.WebApi.Controllers
 {
@@ -34,7 +35,7 @@ namespace Object13.WebApi.Controllers
                 switch (reponse)
                 {
                     case UserRegisterDtoResult.EmailExist:
-                        return JsonResponseStatus.Error("Email Is Already Exist In Seystem");
+                        return JsonResponseStatus.Error("EmailExist");
                 }
             }
             return JsonResponseStatus.Success();
@@ -82,8 +83,27 @@ namespace Object13.WebApi.Controllers
         }
         #endregion
 
+        #region Check USer Auth
+        [HttpPost("checkuserauth")]
+        public async Task<IActionResult> CheckUserAuth()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userService.GetUserById(User.GetUserId());
+                return JsonResponseStatus.Success(new
+                {
+                    userId = user.Id,
+                    firstName = user.FirstName,
+                    email = user.Email
+                });
+            }
+            return JsonResponseStatus.Error("Unauthorized");
+        }
+
+        #endregion
+
         #region Sign Out
-        [HttpPost("logout")]
+        [HttpGet("logout")]
         public async Task<IActionResult> LogOut()
         {
             if (User.Identity.IsAuthenticated)

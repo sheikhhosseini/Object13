@@ -80,7 +80,7 @@ namespace Object13.WebApi
                     builder.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        .AllowCredentials()
+                        
                         .Build();
                 });
             });

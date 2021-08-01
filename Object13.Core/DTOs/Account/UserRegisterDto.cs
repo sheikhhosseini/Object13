@@ -30,15 +30,15 @@ namespace Object13.Core.DTOs.Account
         [MaxLength(150, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
         public string LastName { get; set; }
 
-        [Display(Name = "سن")]
-        public int Age { get; set; }
 
         [Display(Name = "جنسیت")]
         [Required(ErrorMessage = "لطفا {0} را ثبت کنید")]
-        public bool Gender { get; set; }
+        [MaxLength(15, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        public string Gender { get; set; }
 
         [Display(Name = "شماره تلفن همراه")]
         [MaxLength(15, ErrorMessage = "تعداد کاراکتر های {0} نمیتواند بیشتر از {1} باشد")]
+        [Required(ErrorMessage = "لطفا {0} را ثبت کنید")]
         public string MobileNumber { get; set; }
     }
 

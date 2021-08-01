@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp.Text;
 using Microsoft.EntityFrameworkCore;
 using Object13.Core.DTOs.Account;
 using Object13.Core.Security;
@@ -45,15 +46,15 @@ namespace Object13.Core.Services.Implementations
             var user = new User
             {
                 Email = newUser.Email.SanitizeText(),
-                Age = newUser.Age,
                 Password = _passwordHelper.EncodePasswordMd5(newUser.Password),
                 FirstName = newUser.FirstName.SanitizeText(),
                 LastName = newUser.LastName.SanitizeText(),
                 MobileNumber = newUser.MobileNumber.SanitizeText(),
-                Gender = newUser.Gender,
+                Gender = newUser.Gender.SanitizeBool(),
                 EmailActiveCode = Guid.NewGuid().ToString()
             };
             await _userRepository.AddEntity(user);
+            await _userRepository.SaveChanges();
             return UserRegisterDtoResult.Success;
         }
 
@@ -86,6 +87,11 @@ namespace Object13.Core.Services.Implementations
         {
             return await _userRepository.GetEntitiesQuery().SingleOrDefaultAsync(u =>
                 u.Email == email.ToLower().Trim());
+        }
+
+        public async Task<User> GetUserById(long userId)
+        {
+            return await _userRepository.GetEntityById(userId);
         }
     }
 }

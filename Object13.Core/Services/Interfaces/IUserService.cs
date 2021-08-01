@@ -15,5 +15,6 @@ namespace Object13.Core.Services.Interfaces
         Task<bool> IsUserExistByEmail(string email);
         Task<UserLoginDtoResult> LoginUser(UserLoginDto newUser);
         Task<User> GetUserByEmail(string email);
+        Task<User> GetUserById(long userId);
     }
 }
