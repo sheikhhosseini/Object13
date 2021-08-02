@@ -19,6 +19,7 @@ using Object13.DataLayer.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Object13.Core.Email;
 using Object13.Core.Security;
 
 namespace Object13.WebApi
@@ -50,11 +51,18 @@ namespace Object13.WebApi
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             #endregion
 
+            #region ForEmail-RazorView
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            #endregion
+
             #region AppServices
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ISliderService, SliderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<IMailSender, SendEmail>();
+            services.AddScoped<IViewRenderService, RenderViewToString>();
             #endregion
 
             #region Auth
@@ -80,7 +88,6 @@ namespace Object13.WebApi
                     builder.AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod()
-                        
                         .Build();
                 });
             });
@@ -110,6 +117,7 @@ namespace Object13.WebApi
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

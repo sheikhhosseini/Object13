@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AngleSharp.Text;
 using Microsoft.EntityFrameworkCore;
 using Object13.Core.DTOs.Account;
+using Object13.Core.Email;
 using Object13.Core.Security;
 using Object13.Core.Services.Interfaces;
 using Object13.DataLayer.Models.Account;
@@ -18,11 +19,15 @@ namespace Object13.Core.Services.Implementations
         #region Ctor
         private readonly IGenericRepository<User> _userRepository;
         private readonly IPasswordHelper _passwordHelper;
+        private readonly IMailSender _mailSender;
+        private readonly IViewRenderService _renderViewService;
 
-        public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper)
+        public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper, IMailSender mailSender, IViewRenderService renderService)
         {
             _userRepository = userRepository;
             _passwordHelper = passwordHelper;
+            _mailSender = mailSender;
+            _renderViewService = renderService;
         }
         #endregion
 
@@ -54,7 +59,20 @@ namespace Object13.Core.Services.Implementations
                 EmailActiveCode = Guid.NewGuid().ToString()
             };
             await _userRepository.AddEntity(user);
-            await _userRepository.SaveChanges();
+            // await _userRepository.SaveChanges();
+
+            try
+            {
+                var body = await _renderViewService.RenderToStringAsync("Email/ActivateAccount", null);
+                _mailSender.Send("saeed779911@gmail.com", "تست فعال سازی ", body);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            
+
             return UserRegisterDtoResult.Success;
         }
 
