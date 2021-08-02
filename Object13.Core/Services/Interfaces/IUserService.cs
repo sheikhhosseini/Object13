@@ -16,5 +16,7 @@ namespace Object13.Core.Services.Interfaces
         Task<UserLoginDtoResult> LoginUser(UserLoginDto newUser);
         Task<User> GetUserByEmail(string email);
         Task<User> GetUserById(long userId);
+        Task<User> GetUserByActiveCode(string activeCode);
+        Task ActivateUser(User user);
     }
 }

@@ -59,20 +59,11 @@ namespace Object13.Core.Services.Implementations
                 EmailActiveCode = Guid.NewGuid().ToString()
             };
             await _userRepository.AddEntity(user);
-            // await _userRepository.SaveChanges();
+            await _userRepository.SaveChanges();
 
-            try
-            {
-                var body = await _renderViewService.RenderToStringAsync("Email/ActivateAccount", null);
-                _mailSender.Send("saeed779911@gmail.com", "تست فعال سازی ", body);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-            
-
+            var body = await _renderViewService.RenderToStringAsync("Email/ActivateAccount", user);
+            _mailSender.Send(newUser.Email, "تست فعال سازی ", body);
+                
             return UserRegisterDtoResult.Success;
         }
 
@@ -110,6 +101,20 @@ namespace Object13.Core.Services.Implementations
         public async Task<User> GetUserById(long userId)
         {
             return await _userRepository.GetEntityById(userId);
+        }
+
+        public async Task<User> GetUserByActiveCode(string activeCode)
+        {
+            return await _userRepository.GetEntitiesQuery().SingleOrDefaultAsync(u =>
+                u.EmailActiveCode == activeCode);
+        }
+
+        public async Task ActivateUser(User user)
+        {
+            user.IsActivated = true;
+            user.EmailActiveCode = Guid.NewGuid().ToString();
+            _userRepository.UpdateEntity(user);
+            await _userRepository.SaveChanges();
         }
     }
 }

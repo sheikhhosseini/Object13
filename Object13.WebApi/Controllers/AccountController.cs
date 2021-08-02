@@ -114,5 +114,19 @@ namespace Object13.WebApi.Controllers
             return JsonResponseStatus.Error();
         }
         #endregion
+
+        #region Activate Account
+        [HttpGet("activate-account/{id}")]
+        public async Task<IActionResult> ActiveAccount(string id)
+        {
+            var user = await _userService.GetUserByActiveCode(id);
+            if (user != null)
+            {
+               await _userService.ActivateUser(user);
+               return JsonResponseStatus.Success("userActivated");
+            }
+            return JsonResponseStatus.NotFound();
+        }
+        #endregion
     }
 }
