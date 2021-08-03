@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Object13.Core.DTOs.Paging;
+using Object13.Core.DTOs.Products;
 using Object13.Core.Services.Interfaces;
+using Object13.Core.Utilites.Extention;
 using Object13.DataLayer.Models.Product;
 using Object13.DataLayer.Models.SiteUtilites;
 using Object13.DataLayer.Repository;
@@ -41,6 +45,29 @@ namespace Object13.Core.Services.Implementations
             _productRepository.UpdateEntity(product);
             await _productRepository.SaveChanges();
         }
+
+        public async Task<FilterProductsDto> FilterProducts(FilterProductsDto filter)
+        {
+            var productsQuery = _productRepository.GetEntitiesQuery().AsQueryable();
+            if (!string.IsNullOrEmpty(filter.Title))
+            {
+                productsQuery = productsQuery.Where(p => p.ProductName.Contains(filter.Title));
+            }
+            productsQuery = productsQuery.Where(p => p.Price >= filter.StartPrice);
+
+            if (filter.EndPrice != 0)
+            {
+                productsQuery = productsQuery.Where(p => p.Price <= filter.EndPrice);
+            }
+
+
+            var count = (int)Math.Ceiling(productsQuery.Count() / (double)filter.TakeEntity);
+            var pager = Pager.Build(count, filter.PageId, filter.TakeEntity);
+            var products = await productsQuery.Paging(pager).ToListAsync();
+
+            return filter.SetProducts(products).SetPaging(pager);
+        }
+        
         #endregion
 
         #region Dispose
