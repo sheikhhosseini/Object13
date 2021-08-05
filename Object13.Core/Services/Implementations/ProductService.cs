@@ -49,6 +49,17 @@ namespace Object13.Core.Services.Implementations
         public async Task<FilterProductsDto> FilterProducts(FilterProductsDto filter)
         {
             var productsQuery = _productRepository.GetEntitiesQuery().AsQueryable();
+
+            switch (filter.Orderby)
+            {
+                case ProductOrderby.PriceAsc:
+                    productsQuery = productsQuery.OrderBy(p => p.Price);
+                    break;
+                case ProductOrderby.PriceDec:
+                    productsQuery = productsQuery.OrderByDescending(p => p.Price);
+                    break;
+            }
+
             if (!string.IsNullOrEmpty(filter.Title))
             {
                 productsQuery = productsQuery.Where(p => p.ProductName.Contains(filter.Title));
@@ -62,16 +73,12 @@ namespace Object13.Core.Services.Implementations
                     t.Product));
             }
 
-            //if (filter.Categories != null && filter.Categories.Any())
-            //    productsQuery = productsQuery.SelectMany(s =>
-            //        s.ProductSelectedCategories.Where(f => filter.Categories.Contains(f.ProductCategoryId)).Select(t => t.Product));
-
-
-
             if (filter.EndPrice != 0)
             {
                 productsQuery = productsQuery.Where(p => p.Price <= filter.EndPrice);
             }
+
+            
 
 
             var count = (int)Math.Ceiling(productsQuery.Count() / (double)filter.TakeEntity);

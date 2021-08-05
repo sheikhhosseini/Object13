@@ -29,5 +29,13 @@ namespace Object13.Core.DTOs.Products
             this.Products = products;
             return this;
         }
+
+        public ProductOrderby? Orderby { get; set; }
+    }
+
+    public enum ProductOrderby
+    {
+        PriceAsc,
+        PriceDec
     }
 }
