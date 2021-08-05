@@ -24,10 +24,20 @@ namespace Object13.WebApi.Controllers
         [HttpGet("getproducts")]
         public async Task<IActionResult> GetProducts([FromQuery] FilterProductsDto filter)
         {
+            //filter.TakeEntity = 3;
             var products = await _productService.FilterProducts(filter);
             return JsonResponseStatus.Success(products);
         }
         #endregion
 
+        #region GetProductCategories
+
+        [HttpGet("products-categories")]
+        public async Task<IActionResult> GetProductsCategories()
+        {
+            return JsonResponseStatus.Success(await _productService.GetAllActiveProductCategories());
+        }
+
+        #endregion
     }
 }

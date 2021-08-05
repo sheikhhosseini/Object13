@@ -11,6 +11,8 @@ namespace Object13.Core.DTOs.Products
         public int EndPrice { get; set; }
         public List<Product> Products { get; set; }
 
+        public List<long> Categories { get; set; }
+
         public FilterProductsDto SetPaging(BasePaging paging)
         {
             this.PageId = paging.PageId;

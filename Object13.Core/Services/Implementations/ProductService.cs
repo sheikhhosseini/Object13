@@ -55,6 +55,19 @@ namespace Object13.Core.Services.Implementations
             }
             productsQuery = productsQuery.Where(p => p.Price >= filter.StartPrice);
 
+            if (filter.Categories != null && filter.Categories.Any())
+            {
+                productsQuery = productsQuery.SelectMany(p => p.ProductSelectedCategories.Where(f =>
+                    filter.Categories.Contains(f.ProductCategoryId)).Select(t =>
+                    t.Product));
+            }
+
+            //if (filter.Categories != null && filter.Categories.Any())
+            //    productsQuery = productsQuery.SelectMany(s =>
+            //        s.ProductSelectedCategories.Where(f => filter.Categories.Contains(f.ProductCategoryId)).Select(t => t.Product));
+
+
+
             if (filter.EndPrice != 0)
             {
                 productsQuery = productsQuery.Where(p => p.Price <= filter.EndPrice);
@@ -78,6 +91,14 @@ namespace Object13.Core.Services.Implementations
             _productGalleryRepository?.Dispose();
             _productVisitRepository?.Dispose();
             _productSelectedCategoryRepository?.Dispose();
+        }
+        #endregion
+
+        #region ProductCategories
+
+        public async Task<List<ProductCategory>> GetAllActiveProductCategories()
+        {
+            return await _productCategoryRepository.GetEntitiesQuery().Where(c=>!c.IsDelete).ToListAsync();
         }
         #endregion
     }
