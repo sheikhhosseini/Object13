@@ -64,7 +64,7 @@ namespace Object13.Core.Services.Implementations
             {
                 productsQuery = productsQuery.Where(p => p.ProductName.Contains(filter.Title));
             }
-            productsQuery = productsQuery.Where(p => p.Price >= filter.StartPrice);
+            
 
             if (filter.Categories != null && filter.Categories.Any())
             {
@@ -72,6 +72,8 @@ namespace Object13.Core.Services.Implementations
                     filter.Categories.Contains(f.ProductCategoryId)).Select(t =>
                     t.Product));
             }
+
+            productsQuery = productsQuery.Where(p => p.Price >= filter.StartPrice);
 
             if (filter.EndPrice != 0)
             {
@@ -87,7 +89,12 @@ namespace Object13.Core.Services.Implementations
 
             return filter.SetProducts(products).SetPaging(pager);
         }
-        
+
+        public async Task<Product> GetProductById(long productId)
+        {
+            return await _productRepository.GetEntityById(productId);
+        }
+
         #endregion
 
         #region Dispose

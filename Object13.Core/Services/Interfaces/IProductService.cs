@@ -14,6 +14,7 @@ namespace Object13.Core.Services.Interfaces
         Task AddProduct(Product product);
         Task UpdateProduct(Product product);
         Task<FilterProductsDto> FilterProducts(FilterProductsDto filter);
+        Task<Product> GetProductById(long productId);
         #endregion
 
         #region ProductCategories

@@ -39,5 +39,18 @@ namespace Object13.WebApi.Controllers
         }
 
         #endregion
+
+        #region ProductDetails
+        [HttpGet("products-detail/{id}")]
+        public async Task<IActionResult> GetProductDetail(long id)
+        {
+            var product = await _productService.GetProductById(id);
+            if (product != null)
+            {
+                return JsonResponseStatus.Success(product);
+            }
+            return JsonResponseStatus.NotFound("4545");
+        }
+        #endregion
     }
 }
