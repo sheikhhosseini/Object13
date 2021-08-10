@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Object13.Core.DTOs.Paging;
 using Object13.Core.DTOs.Products;
@@ -93,6 +94,27 @@ namespace Object13.Core.Services.Implementations
         public async Task<Product> GetProductById(long productId)
         {
             return await _productRepository.GetEntityById(productId);
+        }
+
+        public async Task<List<Product>> GetRelatedProducts(long productId)
+        {
+            var product = await _productRepository.GetEntityById(productId);
+            if (product == null)
+            {
+                return null;
+            }
+
+            var productCategoriesList = await _productSelectedCategoryRepository.GetEntitiesQuery()
+                .Where(s => s.ProductId == productId).Select(f => f.ProductCategoryId).ToListAsync(); ;
+
+            var relatedProducts = await _productRepository
+                .GetEntitiesQuery()
+                .SelectMany(s => s.ProductSelectedCategories.Where(f => productCategoriesList.Contains(f.ProductCategoryId)).Select(t => t.Product))
+                .Where(s => s.Id != productId)
+                .OrderByDescending(s => s.CreateDate)
+                .Take(3).ToListAsync();
+
+            return relatedProducts;
         }
 
         #endregion

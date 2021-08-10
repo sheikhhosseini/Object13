@@ -53,5 +53,15 @@ namespace Object13.WebApi.Controllers
             return JsonResponseStatus.NotFound("4545");
         }
         #endregion
+
+        #region RelatedProducts
+        [HttpGet("related-products/{id}")]
+        public async Task<IActionResult> GetRelatedProducts(long id)
+        {
+            var relatedProducts = await _productService.GetRelatedProducts(id);
+
+            return JsonResponseStatus.Success(relatedProducts);
+        }
+        #endregion
     }
 }
