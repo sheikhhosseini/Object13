@@ -45,9 +45,10 @@ namespace Object13.WebApi.Controllers
         public async Task<IActionResult> GetProductDetail(long id)
         {
             var product = await _productService.GetProductById(id);
+            var productgalleries = await _productService.GetProductActiveGslleries(id);
             if (product != null)
             {
-                return JsonResponseStatus.Success(product);
+                return JsonResponseStatus.Success(new {product = product , galleries = productgalleries });
             }
             return JsonResponseStatus.NotFound("4545");
         }

@@ -109,10 +109,25 @@ namespace Object13.Core.Services.Implementations
         #endregion
 
         #region ProductCategories
-
         public async Task<List<ProductCategory>> GetAllActiveProductCategories()
         {
             return await _productCategoryRepository.GetEntitiesQuery().Where(c=>!c.IsDelete).ToListAsync();
+        }
+        #endregion
+
+        #region ProductGallery
+        public async Task<List<ProductGallery>> GetProductActiveGslleries(long productId)
+        {
+            return await _productGalleryRepository.GetEntitiesQuery()
+                .Where(p => p.ProductId == productId && !p.IsDelete)
+                .Select(p => new ProductGallery()
+                {
+                    ProductId = p.ProductId,
+                    Id = p.Id,
+                    Image = p.Image,
+                    CreateDate = p.CreateDate
+                })
+                .ToListAsync();
         }
         #endregion
     }

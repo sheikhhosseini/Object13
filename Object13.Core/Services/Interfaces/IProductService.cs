@@ -20,5 +20,11 @@ namespace Object13.Core.Services.Interfaces
         #region ProductCategories
         Task<List<ProductCategory>> GetAllActiveProductCategories();
         #endregion
+
+        #region ProductGallery
+
+        Task<List<ProductGallery>> GetProductActiveGslleries(long productId);
+
+        #endregion
     }
 }
