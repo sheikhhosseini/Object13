@@ -63,5 +63,14 @@ namespace Object13.WebApi.Controllers
             return JsonResponseStatus.Success(relatedProducts);
         }
         #endregion
+
+        #region ProductComments
+        [HttpGet("products-comments/{id}")]
+        public async Task<IActionResult> GetProductComments(long id)
+        {
+            var comments = await  _productService.GetActiveProductComments(id);
+            return JsonResponseStatus.Success(comments);
+        }
+        #endregion
     }
 }

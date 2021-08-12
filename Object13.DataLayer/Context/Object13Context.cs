@@ -28,6 +28,7 @@ namespace Object13.DataLayer.Context
         public DbSet<ProductVisit> TblProductVisits { get; set; }
         public DbSet<ProductCategory> TblProductCategories { get; set; }
         public DbSet<ProductSelectedCategory> TblProductSelectedCategories { get; set; }
+        public DbSet<ProductComment> TblProductComments { get; set; }
         #endregion
 
         #region ManageCascade-OnModelCreateing

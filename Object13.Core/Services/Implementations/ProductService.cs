@@ -23,14 +23,16 @@ namespace Object13.Core.Services.Implementations
         private readonly IGenericRepository<ProductGallery> _productGalleryRepository;
         private readonly IGenericRepository<ProductVisit> _productVisitRepository;
         private readonly IGenericRepository<ProductSelectedCategory> _productSelectedCategoryRepository;
+        private readonly IGenericRepository<ProductComment> _productCommentRepository;
 
-        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductVisit> productVisitRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository)
+        public ProductService(IGenericRepository<Product> productRepository, IGenericRepository<ProductCategory> productCategoryRepository, IGenericRepository<ProductGallery> productGalleryRepository, IGenericRepository<ProductVisit> productVisitRepository, IGenericRepository<ProductSelectedCategory> productSelectedCategoryRepository, IGenericRepository<ProductComment> productCommentRepository)
         {
             _productRepository = productRepository;
             _productCategoryRepository = productCategoryRepository;
             _productGalleryRepository = productGalleryRepository;
             _productVisitRepository = productVisitRepository;
             _productSelectedCategoryRepository = productSelectedCategoryRepository;
+            _productCommentRepository = productCommentRepository;
         }
         #endregion
 
@@ -127,6 +129,7 @@ namespace Object13.Core.Services.Implementations
             _productGalleryRepository?.Dispose();
             _productVisitRepository?.Dispose();
             _productSelectedCategoryRepository?.Dispose();
+            _productCommentRepository?.Dispose();
         }
         #endregion
 
@@ -151,6 +154,34 @@ namespace Object13.Core.Services.Implementations
                 })
                 .ToListAsync();
         }
+        #endregion
+
+        #region ProductGallery
+
+        public async Task AddCommentToProduct(ProductComment comment)
+        {
+            await _productCommentRepository.AddEntity(comment);
+            await _productCommentRepository.SaveChanges();
+        }
+
+        public async Task<List<ProductCommentDto>> GetActiveProductComments(long productId)
+        {
+           return await _productCommentRepository.GetEntitiesQuery()
+                .Include(c=>c.User)
+                .Where(c => c.ProductId == productId && !c.IsDelete)
+                .OrderByDescending(c=>c.CreateDate)
+                .Select(c=> new ProductCommentDto
+                {
+                    ProductId = c.ProductId,
+                    IsAccepted = c.IsAccepted,
+                    CommentText = c.CommentText,
+                    UserId = c.UserId,
+                    UserFullName = c.User.FirstName + ' ' + c.User.LastName,
+                    CreateDate = c.CreateDate.ToString("yy-MM-dd -- HH:mm")
+                })
+                .ToListAsync();
+        }
+
         #endregion
     }
 }

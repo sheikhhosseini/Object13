@@ -4,6 +4,7 @@ using System.Reflection.Metadata;
 using System.Security.Principal;
 using Object13.DataLayer.Models.Access;
 using Object13.DataLayer.Models.Main;
+using Object13.DataLayer.Models.Product;
 
 namespace Object13.DataLayer.Models.Account
 {
@@ -61,6 +62,7 @@ namespace Object13.DataLayer.Models.Account
 
         #region Relation
         public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<ProductComment> ProductComments { get; set; }
         #endregion
     }
 }

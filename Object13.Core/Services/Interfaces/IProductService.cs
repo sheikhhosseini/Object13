@@ -23,8 +23,12 @@ namespace Object13.Core.Services.Interfaces
         #endregion
 
         #region ProductGallery
-
         Task<List<ProductGallery>> GetProductActiveGslleries(long productId);
+        #endregion
+
+        #region ProductGallery
+        Task AddCommentToProduct(ProductComment comment);
+        Task<List<ProductCommentDto>> GetActiveProductComments(long productId);
 
         #endregion
     }

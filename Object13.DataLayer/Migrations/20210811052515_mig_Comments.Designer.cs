@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Object13.DataLayer.Context;
 
 namespace Object13.DataLayer.Migrations
 {
     [DbContext(typeof(Object13Context))]
-    partial class Object13ContextModelSnapshot : ModelSnapshot
+    [Migration("20210811052515_mig_Comments")]
+    partial class mig_Comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

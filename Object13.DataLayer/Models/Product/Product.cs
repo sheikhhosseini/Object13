@@ -52,6 +52,7 @@ namespace Object13.DataLayer.Models.Product
         public ICollection<ProductGallery> ProductGaleries { get; set; }
         public ICollection<ProductVisit> ProductVisits { get; set; }
         public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
+        public ICollection<ProductComment> ProductComments { get; set; }
         #endregion
     }
 }
