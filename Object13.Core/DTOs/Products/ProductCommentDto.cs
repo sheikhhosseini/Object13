@@ -27,4 +27,11 @@ namespace Object13.Core.DTOs.Products
 
         public string CreateDate { get; set; }
     }
+
+    public enum AddProductCommentResult
+    {
+        ProductNotFound,
+        Success,
+        Errro
+    }
 }

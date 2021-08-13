@@ -26,9 +26,10 @@ namespace Object13.Core.Services.Interfaces
         Task<List<ProductGallery>> GetProductActiveGslleries(long productId);
         #endregion
 
-        #region ProductGallery
-        Task AddCommentToProduct(ProductComment comment);
-        Task<List<ProductCommentDto>> GetActiveProductComments(long productId);
+        #region ProductComment
+        Task<ProductCommentDto> AddProductComment(AddProductCommentDto comment , long userId);
+        Task<List<ProductCommentDto >> GetActiveProductComments(long productId);
+        Task<bool> IsProductExistById(long productId);
 
         #endregion
     }

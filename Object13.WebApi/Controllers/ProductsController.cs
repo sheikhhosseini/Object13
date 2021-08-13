@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Object13.Core.DTOs.Products;
 using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Common;
+using Object13.Core.Utilites.Extention;
 using Object13.DataLayer.Repository;
 
 namespace Object13.WebApi.Controllers
@@ -70,6 +71,23 @@ namespace Object13.WebApi.Controllers
         {
             var comments = await  _productService.GetActiveProductComments(id);
             return JsonResponseStatus.Success(comments);
+        }
+
+        [HttpPost("add-product-comment")]
+        public async Task<IActionResult> AddProductComment([FromBody] AddProductCommentDto comment)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return JsonResponseStatus.Error(new {message = "وارد سایت شوید" });
+            }
+
+            if (!await _productService.IsProductExistById(comment.ProductId))
+            {
+                return JsonResponseStatus.NotFound(); 
+            }
+            var userId = User.GetUserId();
+            var res = await  _productService.AddProductComment(comment, userId);
+            return JsonResponseStatus.Success(res);
         }
         #endregion
     }

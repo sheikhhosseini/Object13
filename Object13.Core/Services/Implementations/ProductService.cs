@@ -156,12 +156,26 @@ namespace Object13.Core.Services.Implementations
         }
         #endregion
 
-        #region ProductGallery
+        #region ProductComment
 
-        public async Task AddCommentToProduct(ProductComment comment)
+        public async Task<ProductCommentDto> AddProductComment(AddProductCommentDto comment , long userId)
         {
-            await _productCommentRepository.AddEntity(comment);
+            var commentData = new ProductComment
+            {
+                ProductId = comment.ProductId,
+                CommentText = comment.CommentText,
+                UserId = userId
+            };
+
+            await _productCommentRepository.AddEntity(commentData);
             await _productCommentRepository.SaveChanges();
+            return new ProductCommentDto
+            {
+                CommentText = commentData.CommentText,
+                CreateDate = commentData.CreateDate.ToString("yy-MM-dd -- HH:mm"),
+                UserId = userId
+            };
+
         }
 
         public async Task<List<ProductCommentDto>> GetActiveProductComments(long productId)
@@ -180,6 +194,11 @@ namespace Object13.Core.Services.Implementations
                     CreateDate = c.CreateDate.ToString("yy-MM-dd -- HH:mm")
                 })
                 .ToListAsync();
+        }
+
+        public async Task<bool> IsProductExistById(long productId)
+        {
+            return await _productRepository.GetEntitiesQuery().AnyAsync(p => p.Id == productId);
         }
 
         #endregion
