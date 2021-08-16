@@ -7,7 +7,7 @@ using Object13.DataLayer.Models.Orders;
 
 namespace Object13.Core.Services.Interfaces
 {
-    interface IOrderService : IDisposable
+    public interface IOrderService : IDisposable
     {
         #region Order
         Task<Order> CreateUserOrder(long userId);
@@ -15,9 +15,8 @@ namespace Object13.Core.Services.Interfaces
         #endregion
 
         #region OrderDetail
-
         Task AddProductToOrder(long userId , long productId , int count);
-
+        Task<List<OrderDetail>> GetOrderDetails(long orderId);
         #endregion
     }
 }

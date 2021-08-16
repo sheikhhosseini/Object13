@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Object13.Core.Services.Interfaces;
@@ -33,14 +36,14 @@ namespace Object13.Core.Services.Implementations
             };
             await _ordeRepository.AddEntity(order);
             await _ordeRepository.SaveChanges();
-
             return order;
         }
 
         public async Task<Order> GetUserOpenOrder(long userId)
         {
             var order = await _ordeRepository.GetEntitiesQuery()
-                .SingleOrDefaultAsync(o => o.UserId == userId && !o.IsPay && !o.IsDelete);
+                .SingleOrDefaultAsync(o => 
+                    o.UserId == userId && !o.IsPay && !o.IsDelete);
             if (order == null)
             {
                order = await CreateUserOrder(userId);
@@ -58,26 +61,50 @@ namespace Object13.Core.Services.Implementations
             var product = await _productRepository.GetProductByIdForOrder(productId);
             if (user != null && product != null)
             {
-                var order = GetUserOpenOrder(userId);
-                var orderDetail = new OrderDetail
-                {
-                    OrderId =  order.Id,
-                    ProductId = productId,
-                    Count = count,
-                    Price = product.Price
-                };
+                var order = await GetUserOpenOrder(userId);
 
-                await _orderDetailRepository.AddEntity(orderDetail);
+                if (count < 1)
+                {
+                    count = 1;
+                }
+
+                var details = await GetOrderDetails(order.Id);
+                var existDetail = details.SingleOrDefault(d => d.ProductId == productId);
+                if (existDetail != null)
+                {
+                    existDetail.Count += count;
+                    _orderDetailRepository.UpdateEntity(existDetail);
+                }
+                else
+                {
+                    var orderDetail = new OrderDetail
+                    {
+                        OrderId = order.Id,
+                        ProductId = productId,
+                        Count = count,
+                        Price = product.Price
+                    };
+
+                    await _orderDetailRepository.AddEntity(orderDetail);
+                }
                 await _orderDetailRepository.SaveChanges();
             }
         }
+
+        public async Task<List<OrderDetail>> GetOrderDetails(long orderId)
+        {
+            return await _orderDetailRepository.GetEntitiesQuery()
+                .Where(od => od.OrderId == orderId)
+                .ToListAsync();
+        }
+
         #endregion
 
         #region Dispose
         public void Dispose()
         {
-            _ordeRepository?.Dispose();
             _orderDetailRepository?.Dispose();
+            _ordeRepository?.Dispose();
         }
 
         #endregion

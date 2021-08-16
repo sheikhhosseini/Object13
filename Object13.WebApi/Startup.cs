@@ -63,6 +63,7 @@ namespace Object13.WebApi
             services.AddScoped<IPasswordHelper, PasswordHelper>();
             services.AddScoped<IMailSender, SendEmail>();
             services.AddScoped<IViewRenderService, RenderViewToString>();
+            services.AddScoped<IOrderService, OrderService>();
             #endregion
 
             #region Auth
