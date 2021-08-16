@@ -95,6 +95,12 @@ namespace Object13.Core.Services.Implementations
 
         public async Task<Product> GetProductById(long productId)
         {
+            return await _productRepository.GetEntitiesQuery().
+                    SingleOrDefaultAsync(p=>p.Id == productId && !p.IsDelete);
+        }
+
+        public async Task<Product> GetProductByIdForOrder(long productId)
+        {
             return await _productRepository.GetEntityById(productId);
         }
 

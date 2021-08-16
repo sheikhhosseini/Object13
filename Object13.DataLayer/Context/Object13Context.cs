@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Serialization;
 using Object13.DataLayer.Models.Access;
 using Object13.DataLayer.Models.Account;
+using Object13.DataLayer.Models.Orders;
 using Object13.DataLayer.Models.Product;
 using Object13.DataLayer.Models.SiteUtilites;
 
@@ -29,6 +31,8 @@ namespace Object13.DataLayer.Context
         public DbSet<ProductCategory> TblProductCategories { get; set; }
         public DbSet<ProductSelectedCategory> TblProductSelectedCategories { get; set; }
         public DbSet<ProductComment> TblProductComments { get; set; }
+        public DbSet<Order> TblOrders { get; set; }
+        public DbSet<OrderDetail> TblOrderDetails { get; set; }
         #endregion
 
         #region ManageCascade-OnModelCreateing

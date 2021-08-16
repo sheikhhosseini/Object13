@@ -15,6 +15,7 @@ namespace Object13.Core.Services.Interfaces
         Task UpdateProduct(Product product);
         Task<FilterProductsDto> FilterProducts(FilterProductsDto filter);
         Task<Product> GetProductById(long productId);
+        Task<Product> GetProductByIdForOrder(long productId);
         Task<List<Product>> GetRelatedProducts(long productId);
         #endregion
 

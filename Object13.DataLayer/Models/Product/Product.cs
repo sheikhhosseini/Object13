@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Object13.DataLayer.Models.Main;
+using Object13.DataLayer.Models.Orders;
 
 namespace Object13.DataLayer.Models.Product
 {
@@ -53,6 +54,7 @@ namespace Object13.DataLayer.Models.Product
         public ICollection<ProductVisit> ProductVisits { get; set; }
         public ICollection<ProductSelectedCategory> ProductSelectedCategories { get; set; }
         public ICollection<ProductComment> ProductComments { get; set; }
+        public ICollection<OrderDetail> OrderDetails { get; set; }
         #endregion
     }
 }
