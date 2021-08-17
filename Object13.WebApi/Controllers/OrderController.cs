@@ -48,6 +48,28 @@ namespace Object13.WebApi.Controllers
             return JsonResponseStatus.Error("not authorized");
         }
 
+
+        [HttpGet("remove-basket-details/{id}")]
+        public async Task<IActionResult> RemoveOrderDetail(long id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userOpenOrder = await _orderService.GetUserOpenOrder(User.GetUserId());
+                var detail = _orderService.FindOrderDetail(userOpenOrder , id);
+                if (detail != null)
+                {
+                    await _orderService.DeleteOrderDetail(detail);
+                    var details = await _orderService.GetUserBasketDetails(User.GetUserId());
+                    return JsonResponseStatus.Success(details);
+                }
+                else
+                {
+                    return JsonResponseStatus.Error("notfound");
+                }
+                
+            }
+            return JsonResponseStatus.Error("not authorized");
+        }
         #endregion
     }
 }

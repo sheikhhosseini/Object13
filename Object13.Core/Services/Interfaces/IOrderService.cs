@@ -19,6 +19,8 @@ namespace Object13.Core.Services.Interfaces
         Task AddProductToOrder(long userId , long productId , int count);
         Task<List<OrderDetail>> GetOrderDetails(long orderId);
         Task<List<OrderBasketDto>> GetUserBasketDetails(long userId);
+        Task DeleteOrderDetail(OrderDetail detail);
+        OrderDetail FindOrderDetail(Order detailId , long id);
 
         #endregion
     }

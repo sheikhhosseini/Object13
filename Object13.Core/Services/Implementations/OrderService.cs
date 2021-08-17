@@ -98,7 +98,7 @@ namespace Object13.Core.Services.Implementations
         public async Task<List<OrderDetail>> GetOrderDetails(long orderId)
         {
             return await _orderDetailRepository.GetEntitiesQuery()
-                .Where(od => od.OrderId == orderId)
+                .Where(od => od.OrderId == orderId && !od.IsDelete)
                 .ToListAsync();
         }
 
@@ -111,13 +111,26 @@ namespace Object13.Core.Services.Implementations
                 return null;
             }
 
-            return openOrder.OrderDetails.Select(d => new OrderBasketDto
+            return openOrder.OrderDetails.Where(o=>!o.IsDelete).Select(d => new OrderBasketDto
             {
+                Id = d.Id,
                 Count = d.Count,
                 Price = d.Product.Price,
                 Title = d.Product.ProductName,
                 Image = PathTool.Domain + PathTool.ProductImagePath +  d.Product.Image 
             }).ToList();
+        }
+
+        public async Task DeleteOrderDetail(OrderDetail detail)
+        {
+            _orderDetailRepository.RemoveEntity(detail);
+            await _orderDetailRepository.SaveChanges();
+        }
+
+        public OrderDetail FindOrderDetail(Order openOrder , long id)
+        {
+            var detail = openOrder.OrderDetails.SingleOrDefault(o => o.Id == id);
+            return detail;
         }
 
         #endregion

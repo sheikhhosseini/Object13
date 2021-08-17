@@ -8,6 +8,7 @@ namespace Object13.Core.DTOs.Orders
 {
     public class OrderBasketDto
     {
+        public long Id { get; set; }
         public string Title { get; set; }
         public long Price { get; set; }
         public string Image { get; set; }
