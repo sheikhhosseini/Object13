@@ -28,7 +28,22 @@ namespace Object13.WebApi.Controllers
             {
                 var userId =  User.GetUserId();
                 await _orderService.AddProductToOrder(userId, productId, count);
-                return JsonResponseStatus.Success();
+                return JsonResponseStatus.Success(await _orderService.GetUserBasketDetails(userId));
+            }
+            return JsonResponseStatus.Error("not authorized");
+        }
+
+        #endregion
+
+        #region Basket
+
+        [HttpGet("basket-details")]
+        public async Task<IActionResult> GetUserBasketDetails()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var details = await _orderService.GetUserBasketDetails(User.GetUserId());
+                return JsonResponseStatus.Success(details);
             }
             return JsonResponseStatus.Error("not authorized");
         }

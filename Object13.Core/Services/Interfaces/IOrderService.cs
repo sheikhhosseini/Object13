@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Object13.Core.DTOs.Orders;
 using Object13.DataLayer.Models.Orders;
 
 namespace Object13.Core.Services.Interfaces
@@ -17,6 +18,8 @@ namespace Object13.Core.Services.Interfaces
         #region OrderDetail
         Task AddProductToOrder(long userId , long productId , int count);
         Task<List<OrderDetail>> GetOrderDetails(long orderId);
+        Task<List<OrderBasketDto>> GetUserBasketDetails(long userId);
+
         #endregion
     }
 }

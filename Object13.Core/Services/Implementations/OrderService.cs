@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Object13.Core.DTOs.Orders;
 using Object13.Core.Services.Interfaces;
+using Object13.Core.Utilites.Common;
 using Object13.DataLayer.Models.Orders;
 using Object13.DataLayer.Repository;
 
@@ -42,6 +44,8 @@ namespace Object13.Core.Services.Implementations
         public async Task<Order> GetUserOpenOrder(long userId)
         {
             var order = await _ordeRepository.GetEntitiesQuery()
+                .Include(o=>o.OrderDetails)
+                .ThenInclude(o=>o.Product)
                 .SingleOrDefaultAsync(o => 
                     o.UserId == userId && !o.IsPay && !o.IsDelete);
             if (order == null)
@@ -96,6 +100,24 @@ namespace Object13.Core.Services.Implementations
             return await _orderDetailRepository.GetEntitiesQuery()
                 .Where(od => od.OrderId == orderId)
                 .ToListAsync();
+        }
+
+        public async Task<List<OrderBasketDto>> GetUserBasketDetails(long userId)
+        {
+            var openOrder = await GetUserOpenOrder(userId);
+
+            if (openOrder == null)
+            {
+                return null;
+            }
+
+            return openOrder.OrderDetails.Select(d => new OrderBasketDto
+            {
+                Count = d.Count,
+                Price = d.Product.Price,
+                Title = d.Product.ProductName,
+                Image = PathTool.Domain + PathTool.ProductImagePath +  d.Product.Image 
+            }).ToList();
         }
 
         #endregion
