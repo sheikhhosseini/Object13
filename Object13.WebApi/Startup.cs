@@ -94,6 +94,7 @@ namespace Object13.WebApi
             });
             #endregion
 
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllers();
         }
 

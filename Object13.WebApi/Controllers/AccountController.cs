@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +12,7 @@ using Object13.Core.DTOs.Account;
 using Object13.Core.Services.Interfaces;
 using Object13.Core.Utilites.Common;
 using Object13.Core.Utilites.Extention;
+using Object13.DataLayer.Models.Account;
 
 namespace Object13.WebApi.Controllers
 {
@@ -18,10 +20,11 @@ namespace Object13.WebApi.Controllers
     {
         #region ctor
         private readonly IUserService _userService;
-
-        public AccountController(IUserService userService)
+        private readonly IMapper _mapper;
+        public AccountController(IUserService userService , IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
         #endregion
 
@@ -126,6 +129,21 @@ namespace Object13.WebApi.Controllers
                return JsonResponseStatus.Success("userActivated");
             }
             return JsonResponseStatus.NotFound();
+        }
+        #endregion
+
+
+        #region UserInfo
+        [HttpGet("get-user-profile")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userService.GetUserById(User.GetUserId());
+                var res = _mapper.Map<UserProfileInfoDto>(user);
+                return JsonResponseStatus.Success(res);
+            }
+            return JsonResponseStatus.Error("Unauthorized");
         }
         #endregion
     }
