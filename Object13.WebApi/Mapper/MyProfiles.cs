@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Object13.Core.DTOs.Slider;
+using Object13.DataLayer.Models.SiteUtilites;
 
 namespace Object13.WebApi.Mapper
 {
@@ -18,6 +20,14 @@ namespace Object13.WebApi.Mapper
         {
             CreateMap<UserProfileInfoDto, User>().ReverseMap();
 
+        }
+    }
+
+    public class SliderProfile : Profile
+    {
+        public SliderProfile()
+        {
+            CreateMap<SliderDto, Slider>().ReverseMap();
         }
     }
 }

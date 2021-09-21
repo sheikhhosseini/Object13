@@ -11,5 +11,6 @@ namespace Object13.Core.Utilites.Common
         public static string Domain = "https://localhost:44345";
 
         public static string ProductImagePath = "/images/products/origin/";
+        public static string HomeSliderImagePath = "/images/slider/origin/";
     }
 }

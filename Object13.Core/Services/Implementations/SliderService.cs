@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Object13.Core.Services.Interfaces;
+using Object13.Core.Utilites.Common;
 using Object13.DataLayer.Models.SiteUtilites;
 using Object13.DataLayer.Repository;
 
@@ -35,7 +36,14 @@ namespace Object13.Core.Services.Implementations
 
         public async Task<List<Slider>> GetActiveSlider()
         {
-            return await _slideRepository.GetEntitiesQuery().Where(s => !s.IsDelete).ToListAsync();
+            return await _slideRepository.GetEntitiesQuery().Where(s => !s.IsDelete)
+                .Select(s=> new Slider
+                {
+                    Description = s.Description,
+                    Image = PathTool.Domain + PathTool.HomeSliderImagePath + s.Image,
+                    Link = s.Link
+                })
+                .ToListAsync();
         }
 
         public async Task AddSlider(Slider slider)
